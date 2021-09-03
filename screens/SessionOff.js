@@ -1,8 +1,9 @@
 import React from "react";
 import Header from "../components/Header";
 import { connect } from "react-redux";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import styles from "../components/PageStyle";
 
 const SessionOff = (props) => {
   const navigation = useNavigation();
@@ -33,12 +34,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(SessionOff);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

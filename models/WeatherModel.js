@@ -1,12 +1,11 @@
 import { getWeather, getWeatherByLocation } from "../api/api";
 
 export const weatherModel = {
-  state: { cities: [], localWeather: [], citiesInformations: [] },
+  state: { cities: [], localWeather: [], citiesInformations: {} },
 
   reducers: {
     // pour modifier le state
     setCities(state, cities) {
-      console.log(cities);
       // modifie la liste des villes (utile pour ajout / suppression)
       return { ...state, cities };
     },
@@ -15,7 +14,6 @@ export const weatherModel = {
       return { ...state, localWeather };
     },
     setCitiesInformations(state, citiesInformations) {
-      console.log(citiesInformations);
       // modifie la météo des villes choisies
       return { ...state, citiesInformations };
     },

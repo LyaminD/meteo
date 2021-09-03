@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import React from "react";
+import { Text, View, Image } from "react-native";
+import styles from "../components/PageStyle";
 
 const WeatherResult = (props) => {
   if (props.weather.cod != "404") {
@@ -28,18 +29,3 @@ const WeatherResult = (props) => {
 };
 
 export default WeatherResult;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    lineHeight: 30,
-    marginTop: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

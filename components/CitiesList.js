@@ -1,27 +1,41 @@
 import * as React from "react";
-import { ScrollView, Text } from "react-native";
+import { Dimensions, ScrollView, View } from "react-native";
 import { connect } from "react-redux";
-import { SafeAreaView, Dimensions , View} from "react-native";
-import Modal from "../components/Modal";
+import { useIsFocused } from "@react-navigation/native";
+import { ListItem } from "react-native-elements";
+import styles from "../components/PageStyle";
 
 const CitiesList = (props) => {
+  const townList = props.townList;
+  const townWeather = props.townWeather;
+  const isFocused = useIsFocused();
+  const screenHeight = Dimensions.get("window").height;
+
   return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ height: screenHeight }}>
-        <ScrollView>
-          {props.townList.map((city) => (
-            <ListItem key={props.townWeather[city].id}>
-              <Text>{props.townWeather[city]}</Text>
+    <View style={{ height: screenHeight, flex: 1 }}>
+      <View style={{ flex: 5 }}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+        >
+          {props.cities.map((cityName, i) => (
+            <ListItem key={i} bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>{cityName}</ListItem.Title>
+                <ListItem.Subtitle>
+                  {props.townWeather[cityName].main.temp} °C /
+                  {props.townWeather[cityName].main.temp_min} °C mini /
+                  {props.townWeather[cityName].main.temp_max} °C maxi
+                </ListItem.Subtitle>
+              </ListItem.Content>
             </ListItem>
           ))}
-          <Modal/>
         </ScrollView>
-      </SafeAreaView>
-      <Text>{props.townWeather.id}</Text>
+      </View>
     </View>
   );
 };
-const screenHeight = Dimensions.get("window").height;
+
 const mapStateToProps = (state) => {
   return state.weatherModel;
 };

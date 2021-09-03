@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { Text } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
+import styles from "../components/PageStyle";
 
 const Header = () => {
   useEffect(() => {
@@ -25,6 +25,7 @@ const Header = () => {
         {" "}
         Hello {userName}{" "}
       </Text>
+      <Image source={require(`../assets/meteo.jpg`)} style={styles.image} />
     </View>
   );
 };
@@ -34,19 +35,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Header);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header_style: {
-    width: "100%",
-    height: 45,
-    backgroundColor: "#00BCD4",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

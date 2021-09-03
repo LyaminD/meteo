@@ -1,4 +1,4 @@
-import { TextInput, StyleSheet, Text, View, Image } from "react-native";
+import { TextInput, Text, View, Image } from "react-native";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { getWeather } from "../api/api";
@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import * as React from "react";
 import { Button } from "react-native-elements";
 import CitiesList from "../components/CitiesList";
+import { useIsFocused } from "@react-navigation/native";
+import styles from "../components/PageStyle";
 
 const Search = (props) => {
   function addToFavoriteCities() {
@@ -22,6 +24,7 @@ const Search = (props) => {
   const [cityNameInput, setCityNameInput] = useState("");
   const { dispatch } = props;
   const [weather, setWeather] = useState(null);
+  const isFocused = useIsFocused();
 
   async function loadWeather() {
     if (cityNameInput.length > 0) {
@@ -35,33 +38,45 @@ const Search = (props) => {
   return (
     <View style={styles.container}>
       <Header />
-      <Image source={require(`../assets/meteo.jpg`)} style={styles.image} />
-      <TextInput
-        style={{ height: 40, borderColor: "gray", borderWidth: 1, margin: 20 }}
-        onChangeText={(text) => setCityNameInput(text)}
-        placeholder="Cherchez une ville !"
-      ></TextInput>
-      <Button
-        icon={<Icon name="check" size={15} color="white" />}
-        title="Lancer la recherche"
-        onPress={() => loadWeather()}
-      />
-      {weather ? (
-        <View>
-          <WeatherResult weather={weather} />
+      {isFocused ? (
+        <View style={{ flex: 5 }}>
+          <TextInput
+            style={{
+              height: 40,
+              borderColor: "gray",
+              borderWidth: 1,
+              margin: 20,
+            }}
+            onChangeText={(text) => setCityNameInput(text)}
+            placeholder="Cherchez une ville !"
+          ></TextInput>
           <Button
-            icon={<Icon name="plus-square" size={15} color="white" />}
-            title="Ajouter aux favoris"
-            onPress={() => addToFavoriteCities()}
+            style={styles.button}
+            icon={<Icon name="check" size={15} color="white" />}
+            title="Lancer la recherche"
+            onPress={() => loadWeather()}
+          />
+          {weather ? (
+            <View>
+              <WeatherResult weather={weather} />
+              <Button
+                style={styles.button}
+                icon={<Icon name="plus-square" size={15} color="white" />}
+                title="Ajouter aux favoris"
+                onPress={() => addToFavoriteCities()}
+              />
+            </View>
+          ) : (
+            <Text>{"\n"}Aucunes villes séléctionée.</Text>
+          )}
+          <CitiesList
+            townList={props.cities}
+            townWeather={props.citiesInformations}
           />
         </View>
       ) : (
-        <Text>{"\n"}Aucunes villes séléctionée.</Text>
+        <Text>Unfocused</Text>
       )}
-      <CitiesList
-        townList={props.cities}
-        townWeather={props.citiesInformations}
-      />
     </View>
   );
 };
@@ -71,15 +86,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Search);
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  image: {
-    height: 70,
-    width: "100%",
-  },
-});
